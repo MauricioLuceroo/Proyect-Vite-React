@@ -1,0 +1,30 @@
+.gifLoading{    
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    
+}
+.home{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding-top:20px ;
+}
+.titulo{
+    font-size: 40px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+.texto{
+    font-size: 15px;
+    color: rgb(46, 45, 45);
+    text-align: justify;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
