@@ -1,37 +1,36 @@
-import React from "react";
-import Footer from "../Estatico/Footer";
-import Header from "../Estatico/Header";
-import Productos from "../Productos";
-import ProductList from "../ProductList";
-import "./StyleHome.css"; // Importamos el CSS específico para Home
+import React, { useEffect, useState } from "react";
+import loadingGif from "../../assets/Loading.gif"; 
+import ProductList from "../Products/ProductList.jsx";
+import "./StyleHome.css";
 
-const Home = ({productos, loading, error}) => {
+const API_URL = "https://687ad236abb83744b7edeff3.mockapi.io/Productos";
+
+const Home = () => {
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        setProductos(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
   return (
-    <>
-      <Header />
-      <main className="home">
-
-        <h1 className="titulo">Bienvenidos a mi Tienda</h1>
-
-        <p className="texto"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-          Laborum sint est iste blanditiis illo possimus labore excepturi, 
-          aliquam cumque officiis omnis aspernatur quae dicta id velit quos 
-          necessitatibus. Totam, vitae!
-        </p>
-
-        {                        
-         loading 
-         ? (
-         <div className="gifLoading">
-           <img src="/assets/Loading.gif" alt="Cargando..." />
-           </div>
-         )  
-           : <ProductList productos={productos} />     
-        }
-         
-      </main>
-      <Footer />
-    </>
+    <main className="home">
+      <section className="productos">
+        {loading ? (
+          <div className="gifLoading">
+            <img src={loadingGif} alt="Cargando..." />
+          </div>
+        ) : (
+          <ProductList productos={productos} />
+        )}
+      </section>
+    </main>
   );
 };
 

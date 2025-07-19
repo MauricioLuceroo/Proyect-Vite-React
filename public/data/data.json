@@ -5,6 +5,7 @@
     "precio": 5000,    
     "descripcion": "Hueso de juguete para perros, ideal para masticar y jugar.",
     "imagen": "Hueso.jpg",
+    "animal":"Perro",
     "categoria": "Juguetes",
     "stock": 25
 },
@@ -46,11 +47,30 @@
 },
 {
     "id": 6,
-    "nombre": "Caja",
+    "nombre": "Cucha",
     "precio": 8000,
     "descripcion": "Caja de tela para guardar juguetes.",
     "imagen": "Box.webp",
     "categoria": "Accesorios",
     "stock": 25
+},
+{
+    "id": 7,
+    "nombre": "Royal Canin Sensible - 7,5 Kg",
+    "precio": 87000,
+    "descripcion": "Comida de gato de 3kg con ingredientes naturales.",
+    "imagen": "RoyalCaninSensible -7,5Kg.jpg",
+    "categoria": "Alimento",
+    "stock": 8
+},
+{
+    "id": 8,
+    "nombre": "Juguete de cuerda",
+    "precio": 5000,
+    "descripcion": "Juguetes de cuerda resistente para mascotas.",
+    "imagen": "JugueteCuerda.jpg",
+    "categoria": "Accesorios",
+    "stock": 10
 }
+
 ]
