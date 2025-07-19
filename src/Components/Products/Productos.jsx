@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../../Context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { obtenerImagen } from '../../utils/UseImagenes';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -65,7 +64,7 @@ const Productos = ({ producto }) => {
   const itemCarrito = cart.find((p) => p.id === producto.id);
   const cantidad = itemCarrito ? itemCarrito.cantidad : 0;
 
-  const imagenUrl = obtenerImagen(producto.imagen);
+  const imagenUrl = producto.imagen 
 
   const handleClickCard = (e) => {
     if (e.target.closest('button')) return;

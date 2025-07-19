@@ -1,13 +1,8 @@
-import React from 'react'
-import { Link, useParams } from 'react-router-dom'
-import Header from '../Estatico/Header'
-import Footer from '../Estatico/Footer'
-import { CartContext } from '../../Context/CartContext'
-import styled from 'styled-components'
-import { useContext } from 'react'
-import { obtenerImagen } from '../../utils/UseImagenes'
-import { AiOutlineShoppingCart } from 'react-icons/ai'
-
+import React, { useEffect, useState, useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { CartContext } from '../../Context/CartContext';
 
 const Container = styled.section`
   max-width: 900px;
@@ -59,7 +54,6 @@ const Volver = styled(Link)`
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-
 `;
 
 const CarritoButton = styled.button`
@@ -76,48 +70,58 @@ const CarritoButton = styled.button`
   &:hover {
     background-color: #1577e0ff;
   }
+
+  &:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
 `;
 
 const DetallesProductos = () => {
   const { id } = useParams();
-  const { products, loading, error, agregarCarrito } = useContext(CartContext);
+  const { agregarCarrito } = useContext(CartContext);
+  const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch(`https://687ad236abb83744b7edeff3.mockapi.io/Productos/${id}`) 
+      .then((res) => {
+        if (!res.ok) throw new Error('Error en la respuesta');
+        return res.json();
+      })
+      .then((data) => {
+        setProducto(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error al cargar producto:', err);
+        setError(true);
+        setLoading(false);
+      });
+  }, [id]);
 
   if (loading) return <Container><Texto>Cargando producto...</Texto></Container>;
-  if (error) return <Container><Texto>Error al cargar los productos</Texto></Container>;
-
-  const productoEncontrado = products.find((prod) => prod.id === parseInt(id));
-
-  if (!productoEncontrado) return <Container><Texto>Producto no encontrado</Texto></Container>;
-
-  const imagenUrl = obtenerImagen(productoEncontrado.imagen);
-
-  const handleAgregar = () => {
-    agregarCarrito(productoEncontrado);
-    alert('Producto agregado al carrito ✅');
-  };
+  if (error || !producto) return <Container><Texto>Error al cargar el producto</Texto></Container>;
 
   return (
-    
-      
-      <Container>
-        <Imagen src={imagenUrl} alt={productoEncontrado.nombre} />
-        <Titulo>{productoEncontrado.nombre}</Titulo>
-        <Precio>${productoEncontrado.precio}</Precio>
-        <Texto><strong>Descripción:</strong> {productoEncontrado.descripcion}</Texto>
-        <Texto><strong>Stock disponible:</strong> {productoEncontrado.stock}</Texto>
+    <Container>
+      <Imagen src={producto.imagen} alt={producto.nombre} />
+      <Titulo>{producto.nombre}</Titulo>
+      <Precio>${producto.precio}</Precio>
+      <Texto><strong>Descripción:</strong> {producto.descripcion}</Texto>
+      <Texto><strong>Stock disponible:</strong> {producto.stock}</Texto>
 
-         <CarritoButton
-                 onClick={() => agregarCarrito(productoEncontrado)}
-                 disabled={productoEncontrado.stock <= products.stock}
-               >
-                 <AiOutlineShoppingCart style={{ marginRight: '8px' }} />
-                 Comprar
-         </CarritoButton>
+      <CarritoButton
+        onClick={() => agregarCarrito(producto)}
+        disabled={producto.stock <= 0}
+      >
+        <AiOutlineShoppingCart style={{ marginRight: '8px' }} />
+        Comprar
+      </CarritoButton>
 
-        <Volver to="/productos">← Volver a productos</Volver>
-      </Container>
-      
-    
+      <Volver to="/productos">← Volver a productos</Volver>
+    </Container>
   );
 };
 
